@@ -121,45 +121,34 @@ function M.setup()
     end
   })
 
-  --local api_service_snippet = {
-  --s("newApiCall",
-  --fmt([[
-  --interface {name} {{
-  --id: number;
-  --field1: string;
-  --field2?: string;
-  --{field_key}: {field_val};
-  --}}
-  --interface {name}Response {{
-  --data: {name};
-  --message: string;
-  --}}
-  --interface ErrorResponse {{
-  --message: string;
-  --}}
+  -- filename: {service_name}apiService.tsx
+  -- resource: {resource_name} 
+  --    create interface with a field type list something  
+  --    create interface with primitive fields 
 
-  --export const get{name}ById = async ({name_lower}Id:number): Promise<{name}Response | ErrorResponse> => {{
-  --try {{
-  --const response = await API.get<{name}Response>(`/{name_kebab_case}s/${{{name_lower}Id}}`);
-  --return response.data;
-  --}} catch (error:any) {{
-  --return {{
-  --message: error.response?.data.message || "An unexpected error occurred"
-  --}}
-  --}}
-  --}};
-  --]], {
-  --name = i(1, "name"),
-  --field_key = i(2, "field_key"),
-  --field_val = i(3, "field_val"),
-  --name_lower = l(l._1:sub(1, 1):lower() .. l._1:sub(2), 1),
-  --name_kebab_case = l(l._1:gsub("(%u)", "-%1"):lower():gsub("^%-", ""), 1)
-  --}, {
-  --repeat_duplicates = true
-  --})
-  --)
-  --}
+  local api_resource_snippet = {
+    s("newApiCall",
+      fmt([[
+    interface {resource_list} {{
+      list{resource_object}: [{resource_object}];
+    }}
+    interface {resource_object} {{
+      key: string;
+      field1: string;
+      field2?: string;
+      {field_key}: {field_val};
+    }}
+    ]], {
+        resource_list = i(1, "resource_list"),
+        resource_object = i(2, "resource_object"),
 
+        field_key = i(3,"field_key"),
+        field_val = i(4, "field_val"),
+      }, {
+        repeat_duplicates = true
+      })
+    )
+  }
   local api_service_snippet = {
     s("newApiCall",
       fmt([[
